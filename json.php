@@ -9,7 +9,7 @@ $station_id=cleanStationID($_REQUEST["station_id"]);
 
 $db = _open_mysql('worldDataView');
 
-$sql=sprintf("SELECT * FROM view_%s ORDER BY packet_date DESC LIMIT 1",$station_id);
+$sql=sprintf("SELECT * FROM view_%s ORDER BY packet_date DESC LIMIT 1",mysql_real_escape_string($station_id));
 
 
 $query=mysql_query($sql,$db);
