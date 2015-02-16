@@ -13,7 +13,25 @@ function simpleDataRow($data,$title=""){
 	}
 
 }
+/* Thermok relays */
+function relayDataRow($data,$title=""){
+	//add the javascript
+	global $pScript,$pRows;
 
+
+	$pScript.=sprintf("if(data.%s == 0 ) {
+		$('#%s').html('Off');
+	} else {
+		$('#%s').html('On');
+	}\n",$data,$data,$data);
+	//add a row table
+	if($title==""){	
+		$pRows.=sprintf("<tr><th>%s</th><td id='%s'></td></tr>",$data,$data);
+	}else{
+		$pRows.=sprintf("<tr><th>%s</th><td id='%s'></td></tr>",$title,$data);
+	}
+
+}
 /* takes key and creates a sparkline 24 hour chart out of it */
 function sparkLineDataRow($data,$title="",$label=""){
 	//add the javascript
@@ -43,11 +61,32 @@ function sparkLineRow($data,$title=""){
 }
 
 /*  */
-function toFixedDataRow($data,$title="",$fixed=2){
+function toFixedDataRow($data,$title="",$fixed=2,$unit=""){
 	//add the javascript
 	global $pScript,$pRows;
 
-	$pScript.=sprintf("$('#%s').html(parseFloat(data.%s).toFixed(%d));\n",$data,$data,$fixed);
+	$pScript.=sprintf("$('#%s').html(parseFloat(data.%s).toFixed(%d)+\"%s\");\n",$data,$data,$fixed,$unit);
+	//add a row table
+	if($title==""){	
+		$pRows.=sprintf("<tr><th>%s</th><td id='%s'></td></tr>",$data,$data);
+	}else{
+		$pRows.=sprintf("<tr><th>%s</th><td id='%s'></td></tr>",$title,$data);
+	}
+
+}
+
+/* row that will count up */
+function ageRow(){
+	global $pScript,$pRows;
+	$pRows.=sprintf("<tr><th>Age in Seconds:</th><td id='pageAge'></td></tr>",$title,$data);
+}
+
+/* for temperatures */
+function toFixedTemperatureDataRow($data,$title="",$fixed=2,$unit=""){
+	//add the javascript
+	global $pScript,$pRows;
+
+	$pScript.=sprintf("$('#%s').html(parseFloat(data.%s).toFixed(%d)+\"%s\");\n",$data,$data,$fixed,$unit);
 	//add a row table
 	if($title==""){	
 		$pRows.=sprintf("<tr><th>%s</th><td id='%s'></td></tr>",$data,$data);
@@ -67,6 +106,13 @@ function anemometerSparkDataRow($anemometerNumber,$unit="MS"){
 	
 	$pRows.=sprintf("<tr><th>Anemometer %d</th><td id='anemometer%s'></td></tr>",$anemometerNumber,$anemometerNumber);
 	
+}
+
+function headline($headline){
+
+	global $pRows;
+
+	$pRows.=sprintf("<tr><th colspan=\"2\" >%s</th></tr>",$headline);
 }
 
 ?>
